@@ -1,0 +1,235 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% comment %} Title e Slogan {% endcomment %}
+{% block title %}{{conf.nome}}{% endblock title %}
+{% block slogan %}|{{conf.meta_titulo}}{% endblock slogan %}
+
+{% block slide %}
+<div class="p-md-2 pe-md-3 p-0 mb-2">
+	<div class="slide gap-2 p-md-2 p-0">
+		<div class="categoria col-3 d-none d-md-block ">
+			<span class="text-center span-categoria w-100 d-flex align-items-center  gap-2"><i class="fa fa-list"></i> Todas Categorias</span>
+			<ul class="menu">
+				{% if spcateg %}
+					{% for sp in spcateg %}
+						{% if forloop.counter < 14  and sp.categoria_set.all %}
+						<li class="menu-item menu-submenu">
+							<a href="{% url 'sp' sp.url %}" class="d-flex  align-items-center justify-content-between "> <span>{{sp}}</span> <i class="dropdown-toggle submenu-icon"></i> </a>
+							<div class="submenu">
+								<div class="row">
+									<div class="col-12 text-center">
+										<h5>{{sp}}</h5>
+										<ul class="p-0 d-flex gap-2 flex-wrap justify-content-center">
+											{% for categ in sp.categoria_set.all %}
+											<li class="submenu-item p-0"><a href="{% url 'cat' categ.url %}">{{categ}}</a></li>
+											{% endfor %}
+										</ul>
+									</div>
+								</div>
+							</div>
+						</li>
+						{% endif %}
+						
+					{% endfor %}
+				{% endif %}
+			</ul>
+		</div>
+
+		<div class="anuncios col-md-9 col-12 ">
+			<div class="swiper bg-light rounded-2 mySwiper">
+				<div class="swiper-wrapper mb-0">
+					{% for sd in slider %}
+						<div class="swiper-slide">
+							<div class="slide-img {% if sd.activar_texto %} d-none {% endif %}" style='width: 100% !important;'>
+								<img src="{{sd.img.url}}" alt="" class="{% if not sd.activar_texto %} img-fluid w-100 {% endif %}">
+							</div>
+
+							<div class="d-flex p-0 p-md-2 {% if not sd.activar_texto %} d-none {% endif %}">
+								<div class="col-8 {% if not sd.activar_texto %} d-none {% endif %} mx-2 px-2 rounded-2 py-5 d-none d-md-flex align-items-center ">
+									<div class="{% if not sd.activar_texto %} d-none {% endif %}">
+										<div class="p-0 text">{{sd|safe}}</div>
+										<div class="p-0 text">
+											{{sd.descricao|safe}}
+											<div class="badge bg-menu mb-2">
+												{% if sd.promo > sd.preco %}
+													<del>{{sd.produto.preco}}MZN</del> <span>{{sd.produto.promo}}</span>MZN
+												{% else %}
+													<span>{{sd.produto.preco}}</span>MZN
+												{% endif %}
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-8 {% if not sd.activar_texto %} d-none {% endif %} mx-2 px-2 rounded-2 py-md-5 py-2 d-flex d-md-none align-items-center ">
+									<div class="{% if not sd.activar_texto %} d-none {% endif %}">
+										<div class="p-0 text">{{sd.nome_mobile|safe}}</div>
+										<div class="p-0 text">
+											{{sd.descricao_mobile|safe}}
+											<div class="badge bg-menu mb-2">
+												{% if sd.promo > sd.preco %}
+													<del>{{sd.produto.preco}}MZN</del> <span>{{sd.produto.promo}}</span>MZN
+												{% else %}
+													<span>{{sd.produto.preco}}</span>MZN
+												{% endif %}
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="{% if sd.activar_texto %} col-md-4 {% else %} col-md-12 {% endif %} text-center h-100 slide-img w-100 p-2 ">
+									<img src="{{sd.img.url}}" alt="" class="{% if not sd.activar_texto %} img-fluid w-100 {% endif %}">
+								</div>
+								
+							</div>
+						
+					  	</div>
+					{% endfor %}
+				  
+				  
+				</div>
+				<div class="swiper-pagination "></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock slide %}
+
+{% comment %} info {% endcomment %}
+{% block info %}
+	<div class="container-fluid br-bottom">
+		<div class="row">
+			<div class="col-md-4  mb-2">
+				<div class="store-support">
+					<div class="text-center support-icon">
+						<i class="bi bi-truck fa-2x"></i>
+					</div>
+					<div class="support-text">
+						<span class="fw-bold">Formas de entregas</span>
+						<p class="mb-0">{{tarefa.entrega}}</p>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-4 order-3 order-md-2 py-0 mb-2">
+				<div class="store-support">
+					<div class="support-icon">
+						<i class="fa fa-shopping-cart fa-2x"></i>
+					</div>
+					<div class="support-text">
+						<strong class="fw-bolder">Formas de pagamento & Compra</strong>
+						<p class="mb-0">{{tarefa.pagamento}}</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 mb-2 mb-md-3 py-0 ">
+				<div class="store-support align-items-center ">
+					<div class="support-icon">
+						<i class="bi bi-headset fa-2x"></i>
+					</div>
+					<div class="support-text">
+						<strong class="fw-bolder">Suporte ao cliente</strong>
+						<p class="mb-0">{{tarefa.suporte}}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock info %}
+
+{% block main %}
+<!-- Veja estes produtos -->
+{% if achados %}
+<div class="container-fluid  mb-3">
+	<div class="h-10 w-100 shadow px-2 bg-white rounded-2 pb-2 mb-2">
+		<div class="w-100 p-2 d-flex align-items-center justify-content-between ">
+			<div class='section-title'>
+				<h3 class="mb-0 pb-0">Veja estes <span class="text-yellow">Produtos <i class="fa fa-fire text-warning"></i></span> </h3>
+			</div>
+			<div class="controle">
+				<span class="controle-prev"> <i class="fa fa-chevron-left"></i></span>
+				<span class="controle-next"> <i class="fa fa-chevron-right"></i></span>
+			</div>
+		</div>
+
+		<div class="swiper achadossemana mx-2 pb-3">
+			<div class="swiper-wrapper">
+		  {% for prod in achados %}
+				<div class="swiper-slide">
+					<div class="produto-content">
+						<small class="text-muted "><i class="fa fa-tags"></i> {{prod.categ}}</small>
+						<div class="produto-img">
+							<a href="{% url 'prod' prod.url%}" class="produto-titulo"><img src="{{prod.img.url}}" alt=""></a>
+						</div>
+
+						<div class="produto-detalhe mb-2">
+							<a href="{% url 'prod' prod.url%}" class="produto-titulo">{{prod}}</a>
+						</div>
+
+						<div class="produto-precos">
+							{% if prod.promo > prod.preco %}
+							<del class="prod-promo">{{prod.promo}}</del>
+							{% endif %}
+							<span class="prod-preco">{{prod.preco}}</span>
+						</div>
+					</div>
+				</div>
+		  {% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
+<!-- Anuncios de imagem -->
+{% if anuncio and anuncio.count == 2 %}
+<div class="slide-anuncios container-fluid mb-3">
+	<div class="row">
+		{% for anuncio in anuncio %}
+			<div class="col-6 h-auto"><img src="{{anuncio.img.url}}" alt="" class="anuncio-img rounded-2 "></div>
+		{% endfor %}		
+	</div>
+</div>
+
+{% endif %}
+<!-- Veja estes produtos -->
+<div class="container-fluid mb-3">
+	<div class="h-10 w-100 shadow px-2 bg-white rounded-2 pb-2 mb-2">
+		<div class="w-100 p-2 d-flex align-items-center justify-content-between ">
+			<div class='section-title'>
+				<h3 class="mb-0 pb-0">Aqui vais <span class="text-yellow">Adorar <i class="fa fa-heart text-danger"></i></span> </h3>
+			</div>
+		</div>
+
+		{% if prod %}
+		<div class=" mx-2 pb-3 mb-4">
+			<div class="row lista-produtos">
+		  {% for prod in prod %}
+				<div class="col-md-2 col-6 mb-2">
+					<div class="produto-content">
+						<small class="text-muted "><i class="fa fa-tags"></i> {{prod.categ}}</small>
+						<div class="produto-img">
+							<a href="{% url 'prod' prod.url %}" class="produto-titulo"><img src="{{prod.img.url}}" alt=""></a>
+						</div>
+
+						<div class="produto-detalhe mb-2">
+							<a href="{% url 'prod' prod.url%}" class="produto-titulo">{{prod}}</a>
+						</div>
+
+						<div class="produto-precos">
+							{% if prod.promo > prod.preco %}
+							<del class="prod-promo">{{prod.promo}}</del>
+							{% endif %}
+							<span class="prod-preco">{{prod.preco}}</span>
+						</div>
+					</div>
+				</div>
+		  {% endfor %}
+			</div>
+
+			<button class="float-end btn btn-outline-warning  btn-vermais shadow-none ">Ver mais <i class="fa fa-arrow-down"></i></button>
+		</div>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock main %}

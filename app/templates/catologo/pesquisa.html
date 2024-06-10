@@ -1,0 +1,112 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% comment %} Title e Slogan {% endcomment %}
+{% block slogan %}
+{% if produtos %}
+Pesquisou por: {{q}}
+{% else %}
+Sem Resultados para mostrar
+{% endif %}
+{% endblock slogan %}
+
+
+{% block  title %}Pesquisa {% endblock title %} 
+
+{% block main %}
+	<!--products-tab start-->
+	<div class="container-fluid">
+		<div class="bg-light p-2 my-3">
+			<div class="section-title col-md-4">
+                <h3>Pesquisou por: "{{q}}"</h3>
+                <small>Encontre aqui os seus resultados</small>
+            </div>
+
+			<div class="row">
+                {% if produtos %}
+                    {% for prod in produtos %}
+                        <div class="col-md-2 col-4 mb-2">
+                            <div class="produto-content">
+                                <small class="text-muted "><i class="fa fa-tags"></i> {{prod.categ}}</small>
+                                <div class="produto-img w-100">
+                                    <a href="{% url 'prod' prod.url %}" class="produto-titulo"><img src="{{prod.img.url}}" class="w-100"></a>
+                                </div>
+    
+                                <div class="produto-detalhe mb-2">
+                                    <a href="{% url 'prod' prod.url%}" class="produto-titulo">{{prod}}</a>
+                                </div>
+    
+                                <div class="produto-precos">
+                                    {% if prod.promo > prod.preco %}
+                                    <del class="prod-promo">{{prod.promo}}</del>
+                                    {% endif %}
+                                    <span class="prod-preco">{{prod.preco}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                <div class="col-12 text-center">
+                    <p>Sem produtos para mostrar</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- paginacao -->
+            <ul class="pagination justify-content-center my-2">
+                <li class="page-item {% if not produtos.has_previous %}disabled{% endif %}">
+                    <a class="page-link" href="{% url 'pesq_page' %}?categoria={{catpk}}&q={{q}}&page={% if produtos.has_previous %}{{ produtos.previous_page_number }}{% endif %}">Anterior</a>
+                </li>
+                <li class="page-item active">
+                    <span class="page-link">{{produtos.number}}</span>
+                    <input type="hidden" id='page' name="page" value="{{produtos.number}}">
+                </li>
+                <li class="page-item {% if not produtos.has_next %}disabled{% endif %}">
+                    <a class="page-link" href="{% url 'pesq_page' %}?categoria={{catpk}}&q={{q}}&page={% if produtos.has_next %}{{ produtos.next_page_number }}{% endif %}">Próxima</a>
+                </li>
+            </ul>
+
+
+            {% if rel %}
+            <div class="row my-3">
+				<div class="col-md-4 pr-0">
+					<div class="section-title">
+						<h3>Produtos recomendados</h3>
+						<small>Veja mais este produtos você vai gostar</small>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+                    {% for prod in rel %}
+                        {% if forloop.counter < 25 %}
+                        <div class="col-md-2 col-4 mb-2">
+                            <div class="produto-content">
+                                <small class="text-muted "><i class="fa fa-tags"></i> {{prod.categ}}</small>
+                                <div class="produto-img w-100">
+                                    <a href="{% url 'prod' prod.url %}" class="produto-titulo"><img src="{{prod.img.url}}" class="w-100"></a>
+                                </div>
+    
+                                <div class="produto-detalhe mb-2">
+                                    <a href="{% url 'prod' prod.url%}" class="produto-titulo">{{prod}}</a>
+                                </div>
+    
+                                <div class="produto-precos">
+                                    {% if prod.promo > prod.preco %}
+                                    <del class="prod-promo">{{prod.promo}}</del>
+                                    {% endif %}
+                                    <span class="prod-preco">{{prod.preco}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+            </div>
+            {% else %}
+            <div class="col-12 text-center">
+                <p>Sem produtos para mostrar</p>
+            </div>
+            {% endif %}
+		</div>
+	</div>
+	<!--products-tab end-->
+{% endblock main %}

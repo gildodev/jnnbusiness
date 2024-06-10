@@ -1,0 +1,59 @@
+<footer class="bg-footer">
+    <div class="container-fluid py-3">
+        <div class="row">
+            <div class="col-md-3">
+                <div class='section-title'>
+                    <h3 class="mb-0 pb-0 text-nice">Sobre nós</h3>
+                </div>
+                <div class="my-2">
+                    <h5 class="text-nice">{{conf}}</h5>
+                    <small>{{conf.meta_descricao |safe}}</small>
+                    
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <div class="border d-block text-center p-2" style="border-radius:20px">
+                    <img class="logotipo" src="{{conf.logo.url}}" alt="logo">
+                    <div><small style="font-size: 10px; margin-top: -10px;">{{conf.slogan}}</small></div>
+
+                    <div class="d-flex align-items-center gap-2 justify-content-center pt-2">
+                        <div class="social-media gap-3">
+                            <a href="{% if conf.rs_tiktok %} {{conf.rs_tiktok}}{% else %}#{% endif %}"><span class="icon"><span class="fab fa-tiktok fa-2x"></span></span></a>
+                            <a href="{% if conf.rs_facebook %} {{conf.rs_facebook}}{% else %}#{% endif %}"><span class="icon"><span class="fab fa-facebook fa-2x"></span></span></a>
+                            <a href="{% if conf.rs_instagram %} {{conf.rs_instagram}}{% else %}#{% endif %}"><span class="icon"><span class="fab fa-instagram fa-2x"></span></span></a>
+                            <a href="{% if conf.rs_whatsapp %} {{conf.rs_whatsapp}}{% else %}#{% endif %}"><span class="icon"><span class="fab fa-whatsapp fa-2x"></span></span></a>
+                        </div>
+                    </div>
+                    <div class="contact-info align-items-center py-2 gap-2 justify-content-center m-0 text-center">
+                        <p><span class="icon text-light"><i class="fa fa-envelope text-warning "></i></span> {{conf.email}}</p>
+                        <p><span class="icon"><i class="fa fa-phone text-warning "></i></span> {{conf.contato}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-2">
+                <div class='section-title'>
+                    <h3 class="mb-0 pb-0 text-nice">Categorias</h3>
+                    <ul class="lista-categ py-2">
+                        {% for categ in categ %}
+                          <li class="categ-item"><a href="{% url 'cat' categ.url %}">{{categ}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="border-bottom"></div>
+
+        <div class="row">
+            <div class="col-md-6 py-2 text-md-start text-center">
+                <a href="">Termos & Condições</a>
+                <span> | </span>
+                <a href="">Politicas de Privacidade</a>
+            </div>
+
+            <div class="col-md-6 py-2 text-md-end text-center">
+                <span> Desenvolvido por </span>
+                <a href="https://sistec.pythonanywhere.com/" target="_blank">Gildo Nhamirre</a>
+            </div>
+        </div>
+    </div>
+</footer>

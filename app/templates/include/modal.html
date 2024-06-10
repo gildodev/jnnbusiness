@@ -1,0 +1,27 @@
+{% comment %} Modal de pesquisa {% endcomment %}
+
+<div class="modal fade" id="pesquisa-mobile" tabindex="-1">
+    <div class="modal-dialog-centered modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header border-0 float-end">
+                <button data-bs-toggle='modal' data-bs-dismiss='modal' class="btn-close btn"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pesquisa">
+                    <form class="rounded w-100" action="{% url 'pesq' %}">
+                        <div class="input-group position-relative border-0 bg-navbar border-bottom ">
+                            <input type="search" name="q" class="form-control shadow-none pe-5" id="q" placeholder="Pesquisar...">
+                            <span class="end-0 d-flex top-0 mt-2 me-3 icon-search position-absolute ">
+                                <i class="fa fa-search text-info"></i>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
